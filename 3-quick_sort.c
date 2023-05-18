@@ -1,27 +1,49 @@
 #include "sort.h"
 
-int partitioner(int *array, int start, int end)
+/**
+ * swap - swaps two elements.
+ * @x: first element.
+ * @y: second element.
+ */
+void swap(int *x, int *y)
 {
-	int pvt = array[end];
-	int i = start - 1, j, temp;
+	int tmp;
 
-	for (j = start; j <= end - 1; j++)
-		if (array[j] < pvt)
-		{
-			i++;
-			temp = array[i];
-			array[i] = array[j];
-
+	tmp = *y;
+	*y = *x;
+	*x = tmp;
 }
 
-void sorter(int *array, int start, int end)
+/**
+ * partitioner - returns the right location for the pivot.
+ * @array: array.
+ * @size: size of the array.
+ * Return: the location of the pivot.
+ */
+int partitioner(int *array, size_t size)
 {
-	int pvt = partitioner(array, start, end);
+	int pvt = array[size];
+	size_t i = -1, j;
 
-	if (array[0] <> array[end])
-		return;
-	sorter(array, start, pvt - 1);
-	sorter(array, pvt + 1, end);
+	for (j = 0; j < size; j++)
+		if (array[j] <= pvt)
+		{
+			i++;
+			if (i != j)
+			{
+				swap(&array[i], &array[j]);
+				print_array(array, size + 1);
+			}
+		}
+	i++;
+	if (i != size)
+	{
+		swap(&array[i], &array[size]);
+		print_array(array, size + 1);
+	}
+
+	return (i);
+
 }
 
 /**
@@ -31,7 +53,14 @@ void sorter(int *array, int start, int end)
  */
 void quick_sort(int *array, size_t size)
 {
-	int pvt;
+	size_t pvt;
 
-	sorter(array, array[0], array[size]);
+	if (!array || size < 2)
+		return;
+
+	pvt = partitioner(array, size - 1);
+
+	quick_sort(array, pvt);
+	quick_sort(array + pvt, size - pvt);
+
 }
