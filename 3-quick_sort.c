@@ -6,7 +6,7 @@
  * @start: start.
  * @end: end.
  * @size: size of the array.
- * Reurn: the pivot.
+ * Return: the pivot.
  */
 int partitioner(int *array, int start, int end, size_t size)
 {
